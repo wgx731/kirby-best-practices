@@ -1,0 +1,180 @@
+// NOTE: last checked date: 2019-Jan-31
+
+plugins {
+    id("java")
+    id("jacoco")
+    id("idea")
+    id("org.springframework.boot") version "2.2.4.RELEASE"
+    id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("com.github.spotbugs") version "3.0.0"
+    id("io.franzbecker.gradle-lombok") version "3.2.0"
+}
+
+allprojects {
+
+    ext {
+        projectGroup = "com.github.wgx731"
+        projectVersion = "0.9.9"
+
+        javaVersion = "11"
+
+        jacocoVersion = "0.8.5"
+        spotbugsVersion = "3.1.12"
+
+        springBootVersion = "2.2.4.RELEASE"
+
+        jacksonVersion = "2.10.2"
+        lombokVersion = "1.18.10"
+        log4j2Version = "2.13.0"
+
+        junitVersion = "5.6.0"
+        assertjVersion = "3.15.0"
+        mockitoVersion = "3.2.4"
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    group = "${projectGroup}"
+    version = "${projectVersion}"
+
+    apply(plugin: "io.spring.dependency-management")
+    apply(plugin: "org.springframework.boot")
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        }
+        dependencies {
+            dependency("com.github.spotbugs:spotbugs:${spotbugsVersion}")
+            dependency("org.projectlombok:lombok:${lombokVersion}")
+
+            dependency("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+            dependency("org.apache.logging.log4j:log4j-core:${log4j2Version}")
+            dependency("org.apache.logging.log4j:log4j-api:${log4j2Version}")
+            dependency("org.apache.logging.log4j:log4j-slf4j-impl:${log4j2Version}")
+
+            dependency("org.junit.jupiter:junit-jupiter:${junitVersion}")
+            dependency("org.mockito:mockito-core:${mockitoVersion}")
+            dependency("org.assertj:assertj-core:${assertjVersion}")
+        }
+    }
+
+    bootJar {
+        enabled = false
+    }
+
+}
+
+subprojects {
+
+    apply(plugin: "java")
+    apply(plugin: "idea")
+    apply(plugin: "jacoco")
+    apply(plugin: "com.github.spotbugs")
+    apply(plugin: "io.franzbecker.gradle-lombok")
+
+    configurations {
+
+        all*.exclude module: "spring-boot-starter-logging"
+
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+
+    dependencies {
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
+        implementation("com.github.spotbugs:spotbugs")
+
+        testAnnotationProcessor("org.projectlombok:lombok")
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.mockito:mockito-core")
+        testImplementation("org.assertj:assertj-core")
+    }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:all,-processing"
+    }
+
+    jar {
+        onlyIf { !sourceSets.main.allSource.files.isEmpty() }
+    }
+
+    spotbugs {
+        toolVersion = "${spotbugsVersion}"
+        ignoreFailures = false
+        effort = "max"
+        reportLevel = "low"
+    }
+
+    spotbugsTest.enabled = false
+
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        reports {
+            html.enabled = true
+            text.enabled = false
+            xml.enabled = false
+        }
+    }
+
+    lombok {
+        version = "${lombokVersion}"
+    }
+
+    test {
+        dependsOn(spotbugsMain, spotbugsTest)
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    jacoco {
+        toolVersion = "${jacocoVersion}"
+    }
+
+    jacocoTestReport {
+        reports {
+            html.enabled = true
+            csv.enabled = true
+            xml.enabled = false
+        }
+    }
+
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0.9
+                }
+            }
+        }
+    }
+
+    task delombok(type: io.franzbecker.gradle.lombok.task.DelombokTask, dependsOn: compileJava) {
+        ext.outputDir = file("$buildDir/delombok")
+        outputs.dir(outputDir)
+        sourceSets.main.java.srcDirs.each {
+            inputs.dir(it)
+            args(it, "-d", outputDir)
+        }
+    }
+
+    javadoc {
+        dependsOn delombok
+        source = delombok.outputDir
+
+        options.locale = "en_US"
+        options.addStringOption("Xdoclint:none", "-quiet")
+        options.addBooleanOption("html5", true)
+        failOnError = false
+    }
+
+}
