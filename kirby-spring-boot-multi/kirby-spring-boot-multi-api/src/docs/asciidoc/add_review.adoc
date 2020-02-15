@@ -1,0 +1,13 @@
+=== Add new review
+
+- curl request:
+include::{snippets}/add_review/curl-request.adoc[]
+
+- httpie request:
+include::{snippets}/add_review/httpie-request.adoc[]
+
+- HTTP request:
+include::{snippets}/add_review/http-request.adoc[]
+
+- HTTP response:
+include::{snippets}/add_review/http-response.adoc[]

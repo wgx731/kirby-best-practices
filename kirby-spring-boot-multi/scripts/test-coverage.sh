@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULES="kirby-spring-boot-multi-common"
+MODULES="kirby-spring-boot-multi-common kirby-spring-boot-multi-api"
 
 echo "total lines: $(find . -name "*.java" | xargs cat | grep "[a-zA-Z0-9{}]" | wc -l | tr -d ' ')"
 for module in ${MODULES}

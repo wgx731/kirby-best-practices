@@ -12,16 +12,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MonthlyReportTest {
+class ReviewStatisticsCalculatorTest {
 
 
     private LocalDate day1 = LocalDate.of(2020, 01, 20);
     private LocalDate day2 = LocalDate.of(2020, 01, 21);
 
-    private MonthlyReport testCase;
+    private ReviewStatisticsCalculator testCase;
 
     @BeforeEach
     void setUp() {
@@ -70,7 +69,7 @@ class MonthlyReportTest {
         Map<LocalDate, List<Review>> map = new HashMap<>();
         map.put(day1, day1Reviews);
         map.put(day2, day2Reviews);
-        testCase = MonthlyReport
+        testCase = ReviewStatisticsCalculator
             .builder()
             .reviewHistory(map)
             .build();
@@ -83,9 +82,9 @@ class MonthlyReportTest {
 
     @Test
     void getDailyReport() {
-        assertThat(testCase.getDailyReport(LocalDate.now(), "test")).isEmpty();
-        assertThat(testCase.getDailyReport(day1, "test")).isNotEmpty();
-        DoubleSummaryStatistics statistics = testCase.getDailyReport(day1, "kriby-spring-boot-cli").get();
+        assertThat(testCase.getDailySummary(LocalDate.now(), "test")).isEmpty();
+        assertThat(testCase.getDailySummary(day1, "test")).isNotEmpty();
+        DoubleSummaryStatistics statistics = testCase.getDailySummary(day1, "kriby-spring-boot-cli").get();
         assertThat(statistics.getAverage()).isEqualTo(2.0);
         assertThat(statistics.getCount()).isEqualTo(2L);
         assertThat(statistics.getMax()).isEqualTo(3.0);
@@ -93,19 +92,4 @@ class MonthlyReportTest {
         assertThat(statistics.getSum()).isEqualTo(4.0);
     }
 
-    @Test
-    void getMonthlyReport() {
-        DoubleSummaryStatistics empty = testCase.getMonthlyReport("test");
-        assertThat(empty.getAverage()).isEqualTo(0.0);
-        assertThat(empty.getCount()).isEqualTo(0L);
-        assertThat(empty.getMax()).isEqualTo(Double.NEGATIVE_INFINITY);
-        assertThat(empty.getMin()).isEqualTo(Double.POSITIVE_INFINITY);
-        assertThat(empty.getSum()).isEqualTo(0.0);
-        DoubleSummaryStatistics statistics = testCase.getMonthlyReport("kriby-spring-boot-web");
-        assertThat(statistics.getAverage()).isEqualTo(2.5);
-        assertThat(statistics.getCount()).isEqualTo(4L);
-        assertThat(statistics.getMax()).isEqualTo(5.0);
-        assertThat(statistics.getMin()).isEqualTo(1.0);
-        assertThat(statistics.getSum()).isEqualTo(10.0);
-    }
 }

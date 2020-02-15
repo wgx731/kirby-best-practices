@@ -4,6 +4,7 @@ plugins {
     id("java")
     id("jacoco")
     id("idea")
+
     id("org.springframework.boot") version "2.2.4.RELEASE"
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
     id("com.github.spotbugs") version "3.0.0"
@@ -79,6 +80,7 @@ subprojects {
     configurations {
 
         all*.exclude module: "spring-boot-starter-logging"
+        all*.exclude group: "ch.qos.logback"
 
         compileOnly {
             extendsFrom annotationProcessor
@@ -118,8 +120,8 @@ subprojects {
 
     tasks.withType(com.github.spotbugs.SpotBugsTask) {
         reports {
-            html.enabled = true
-            text.enabled = false
+            html.enabled = false
+            text.enabled = true
             xml.enabled = false
         }
     }

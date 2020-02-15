@@ -1,0 +1,7 @@
+DAILY REVIEW REPORT ON %1$s FOR %2$s
+------------------------------------------------------------
+
+Total Review Count: %3$d
+Min Review Score: %4$,.2f
+Max Review Score: %5$,.2f
+Average Review Score: %6$,.2f

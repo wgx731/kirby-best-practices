@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 @ToString
-public class MonthlyReport implements ReviewCalculator{
+public class ReviewStatisticsCalculator implements ReviewCalculator {
 
     private Map<LocalDate, List<Review>> reviewHistory;
 
-    public Optional<DoubleSummaryStatistics> getDailyReport(LocalDate date, String name) {
+    public Optional<DoubleSummaryStatistics> getDailySummary(LocalDate date, String name) {
         if (!reviewHistory.containsKey(date)) {
             return Optional.empty();
         }
@@ -32,15 +32,6 @@ public class MonthlyReport implements ReviewCalculator{
                 .collect(Collectors.toList())
             )
         );
-    }
-
-    public DoubleSummaryStatistics getMonthlyReport(String name) {
-        return this.getSummary(reviewHistory
-            .values()
-            .stream()
-            .flatMap(Collection::stream)
-            .filter(r -> r.getName().equals(name))
-            .collect(Collectors.toList()));
     }
 
 }
