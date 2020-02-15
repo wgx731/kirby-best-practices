@@ -8,3 +8,4 @@ By wgx731 <wgx731@gmail.com>
 
 include::add_review.adoc[]
 
+include::get_daily_report.adoc[]

@@ -26,26 +26,28 @@ public class CaseInsensitiveRequestPredicate implements RequestPredicate {
         return this.target.toString();
     }
 
+    public static class LowerCaseUriServerRequestWrapper extends ServerRequestWrapper {
+
+        LowerCaseUriServerRequestWrapper(ServerRequest delegate) {
+            super(delegate);
+        }
+
+        @Override
+        public URI uri() {
+            return URI.create(super.uri().toString().toLowerCase(Locale.US));
+        }
+
+        @Override
+        public String path() {
+            return uri().getRawPath();
+        }
+
+        @Override
+        public PathContainer pathContainer() {
+            return PathContainer.parsePath(path());
+        }
+
+    }
+
 }
 
-class LowerCaseUriServerRequestWrapper extends ServerRequestWrapper {
-
-    LowerCaseUriServerRequestWrapper(ServerRequest delegate) {
-        super(delegate);
-    }
-
-    @Override
-    public URI uri() {
-        return URI.create(super.uri().toString().toLowerCase(Locale.US));
-    }
-
-    @Override
-    public String path() {
-        return uri().getRawPath();
-    }
-
-    @Override
-    public PathContainer pathContainer() {
-        return PathContainer.parsePath(path());
-    }
-}

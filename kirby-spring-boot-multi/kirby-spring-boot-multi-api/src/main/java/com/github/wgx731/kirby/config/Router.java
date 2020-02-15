@@ -2,6 +2,10 @@ package com.github.wgx731.kirby.config;
 
 import com.github.wgx731.kirby.handler.CaseInsensitiveRequestPredicate;
 import com.github.wgx731.kirby.handler.ReviewHandler;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RequestPredicate;
@@ -13,12 +17,20 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class Router {
 
+    @NonNull
+    private ReviewHandler reviewHandler;
+
     @Bean
-    RouterFunction<ServerResponse> routes(ReviewHandler handler) {
-        return route(i(POST("/reviews/{date}")), handler::addReview)
-            .andRoute(i(GET("/reviews/{date}/{name}")), handler::getDailyReport);
+    public RouterFunction<ServerResponse> routes() {
+        return route(
+            i(POST("/reviews/{date}")), reviewHandler::addReview
+        ).andRoute(
+            i(GET("/reviews/{date}/{name}")), reviewHandler::getDailyReport
+        );
     }
 
     static RequestPredicate i(RequestPredicate target) {

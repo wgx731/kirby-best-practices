@@ -3,6 +3,7 @@ package com.github.wgx731.kirby.service.impl;
 import com.github.wgx731.kirby.helper.ReviewStatisticsCalculator;
 import com.github.wgx731.kirby.model.Review;
 import com.github.wgx731.kirby.service.ReviewService;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,11 @@ public class InMemoryReviewServiceImpl implements ReviewService {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-LLLL-dd");
 
     @Value("classpath:template/daily_empty.txt")
+    @Setter
     private Resource dailyEmptyTemplate;
 
     @Value("classpath:template/daily.txt")
+    @Setter
     private Resource dailyTemplate;
 
     String getStringFromResource(Resource resource) {
