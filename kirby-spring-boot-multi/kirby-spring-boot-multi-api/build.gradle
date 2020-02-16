@@ -2,6 +2,10 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.1.0"
 }
 
+ext {
+    set ("snippetsDir", file("build/generated-snippets"))
+}
+
 dependencies {
     implementation(project(":kirby-spring-boot-multi-common"))
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -21,7 +25,7 @@ bootJar {
 }
 
 asciidoctor {
-    sourceDir file('src/docs/asciidoc')
-    outputDir file('build/docs/rest/output')
-    attributes 'snippets': file('build/docs/rest/source/snippets')
+    baseDirFollowsSourceDir()
+    inputs.dir(snippetsDir)
+    attributes(snippets: "${snippetsDir}")
 }

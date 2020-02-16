@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULES="kirby-spring-boot-multi-common kirby-spring-boot-multi-api"
+source ${PWD}/scripts/config.env || exit 1
 
 echo "total lines: $(find . -name "*.java" | xargs cat | grep "[a-zA-Z0-9{}]" | wc -l | tr -d ' ')"
 for module in ${MODULES}
@@ -11,7 +11,7 @@ do
     | xargs cat | grep "[a-zA-Z0-9{}]" | wc -l | tr -d ' ')"
 done
 
-$PWD/gradlew clean check jacocoTestReport jacocoTestCoverageVerification -q || exit 1
+$PWD/gradlew clean check jacocoTestReport jacocoTestCoverageVerification -q || exit 2
 
 for module in ${MODULES}
 do
@@ -21,6 +21,6 @@ do
         "," \
         '{ instructions += $4 + $5; covered += $5 } END \
         { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' \
-        ${PWD}/${module}/build/reports/jacoco/test/jacocoTestReport.csv || exit 1
+        ${PWD}/${module}/build/reports/jacoco/test/jacocoTestReport.csv || exit 3
     fi
 done

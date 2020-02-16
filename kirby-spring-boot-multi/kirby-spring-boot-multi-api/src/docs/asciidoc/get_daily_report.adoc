@@ -1,4 +1,4 @@
-=== Get Daily Report
+== Get Daily Report
 
 - curl request:
 include::{snippets}/get_daily_report/curl-request.adoc[]
