@@ -17,8 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReviewStatisticsCalculatorTest {
 
 
-    private LocalDate day1 = LocalDate.of(2020, 01, 20);
-    private LocalDate day2 = LocalDate.of(2020, 01, 21);
+    private LocalDate day1 = LocalDate.of(2020, 01, 01);
 
     private ReviewStatisticsCalculator testCase;
 
@@ -45,30 +44,8 @@ class ReviewStatisticsCalculatorTest {
             .name("kriby-spring-boot-web")
             .score(1.0)
             .build());
-        List<Review> day2Reviews = new LinkedList<>();
-        day2Reviews.add(Review
-            .builder()
-            .name("kriby-spring-boot-web")
-            .score(1.0)
-            .build());
-        day2Reviews.add(Review
-            .builder()
-            .name("kriby-spring-boot-web")
-            .score(5.0)
-            .build());
-        day2Reviews.add(Review
-            .builder()
-            .name("kriby-spring-boot-cli")
-            .score(5.0)
-            .build());
-        day2Reviews.add(Review
-            .builder()
-            .name("kriby-spring-boot-cli")
-            .score(1.0)
-            .build());
         Map<LocalDate, List<Review>> map = new HashMap<>();
         map.put(day1, day1Reviews);
-        map.put(day2, day2Reviews);
         testCase = ReviewStatisticsCalculator
             .builder()
             .reviewHistory(map)
