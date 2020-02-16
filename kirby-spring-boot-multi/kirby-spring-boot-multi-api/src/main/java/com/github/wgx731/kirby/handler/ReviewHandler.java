@@ -12,12 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Review Handler
+ */
 @Controller
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
@@ -33,6 +35,11 @@ public class ReviewHandler {
     @NonNull
     private ReviewService reviewService;
 
+    /**
+     * Add review handler
+     * @param request add review request
+     * @return add review response
+     */
     public Mono<ServerResponse> addReview(ServerRequest request) {
         LocalDate date = getDate(request);
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
@@ -43,6 +50,11 @@ public class ReviewHandler {
                 ), LIST_REVIEWS_REF));
     }
 
+    /**
+     * Daily report handler
+     * @param request daily report request
+     * @return daily report response
+     */
     public Mono<ServerResponse> getDailyReport(ServerRequest request) {
         LocalDate date = getDate(request);
         String name = request.pathVariable(NAME);

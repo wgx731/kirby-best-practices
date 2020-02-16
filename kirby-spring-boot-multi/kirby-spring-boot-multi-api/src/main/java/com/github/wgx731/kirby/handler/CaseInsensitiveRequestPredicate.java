@@ -8,6 +8,9 @@ import org.springframework.web.reactive.function.server.support.ServerRequestWra
 import java.net.URI;
 import java.util.Locale;
 
+/**
+ * Request Predicate Which Ignores Case
+ */
 public class CaseInsensitiveRequestPredicate implements RequestPredicate {
 
     private final RequestPredicate target;
@@ -26,6 +29,9 @@ public class CaseInsensitiveRequestPredicate implements RequestPredicate {
         return this.target.toString();
     }
 
+    /**
+     * Inner Server Request Wrapper To Change URL To Lower Case
+     */
     public static class LowerCaseUriServerRequestWrapper extends ServerRequestWrapper {
 
         LowerCaseUriServerRequestWrapper(ServerRequest delegate) {

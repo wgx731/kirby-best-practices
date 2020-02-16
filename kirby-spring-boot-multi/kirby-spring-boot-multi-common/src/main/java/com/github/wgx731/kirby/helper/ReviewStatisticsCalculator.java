@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Review Statistics Calculator
+ */
 @Builder
 @Getter
 @ToString
@@ -20,6 +23,12 @@ public class ReviewStatisticsCalculator implements ReviewCalculator {
 
     private Map<LocalDate, List<Review>> reviewHistory;
 
+    /**
+     * Get statistics of a given date and review from a map of reviews
+     * @param date review date
+     * @param name review name
+     * @return statistics of reviews on given date with given name
+     */
     public Optional<DoubleSummaryStatistics> getDailySummary(LocalDate date, String name) {
         if (!reviewHistory.containsKey(date)) {
             return Optional.empty();

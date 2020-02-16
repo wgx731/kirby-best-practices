@@ -16,6 +16,9 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
+/**
+ * Configuration For Routing Functions
+ */
 @Configuration
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
@@ -24,6 +27,10 @@ public class Router {
     @NonNull
     private ReviewHandler reviewHandler;
 
+    /**
+     * Setup all ending points with handlers
+     * @return application router function
+     */
     @Bean
     public RouterFunction<ServerResponse> routes() {
         return route(
