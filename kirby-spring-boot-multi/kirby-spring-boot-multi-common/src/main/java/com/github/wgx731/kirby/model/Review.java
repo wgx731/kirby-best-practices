@@ -7,17 +7,26 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Review Model
+ */
 @Builder
 @EqualsAndHashCode
 @ToString
-// NOTE: below for spring boot
+// NOTE: below used by spring boot
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review {
 
+    /**
+     * review name
+     */
     private String name;
 
+    /**
+     * review score
+     */
     private Double score;
 
 }

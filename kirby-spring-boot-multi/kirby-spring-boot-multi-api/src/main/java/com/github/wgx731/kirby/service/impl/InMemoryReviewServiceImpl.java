@@ -26,6 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Review Service InMemory Implementation
+ */
 @Service
 public class InMemoryReviewServiceImpl implements ReviewService {
 
