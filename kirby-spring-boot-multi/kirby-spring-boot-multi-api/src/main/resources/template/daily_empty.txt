@@ -1,0 +1,4 @@
+DAILY REVIEW REPORT ON %1$s FOR %2$s
+------------------------------------------------------------
+
+No review found for %2$s.

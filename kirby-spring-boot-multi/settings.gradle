@@ -1,0 +1,3 @@
+rootProject.name = "kirby-spring-boot-multi"
+include("kirby-spring-boot-multi-common")
+include("kirby-spring-boot-multi-api")

@@ -1,0 +1,31 @@
+plugins {
+    id("org.asciidoctor.jvm.convert") version "3.1.0"
+}
+
+ext {
+    set ("snippetsDir", file("build/generated-snippets"))
+}
+
+dependencies {
+    implementation(project(":kirby-spring-boot-multi-common"))
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.projectreactor:reactor-test")
+    testImplementation("org.springframework.restdocs:spring-restdocs-webtestclient")
+}
+
+springBoot {
+    mainClassName = "com.github.wgx731.kirby.Application"
+    buildInfo()
+}
+
+bootJar {
+    enabled true
+}
+
+asciidoctor {
+    baseDirFollowsSourceDir()
+    inputs.dir(snippetsDir)
+    attributes(snippets: "${snippetsDir}")
+}

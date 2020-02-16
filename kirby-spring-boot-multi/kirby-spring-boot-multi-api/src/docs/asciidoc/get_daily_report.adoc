@@ -1,0 +1,13 @@
+== Get Daily Report
+
+- curl request:
+include::{snippets}/get_daily_report/curl-request.adoc[]
+
+- httpie request:
+include::{snippets}/get_daily_report/httpie-request.adoc[]
+
+- HTTP request:
+include::{snippets}/get_daily_report/http-request.adoc[]
+
+- HTTP response:
+include::{snippets}/get_daily_report/http-response.adoc[]
