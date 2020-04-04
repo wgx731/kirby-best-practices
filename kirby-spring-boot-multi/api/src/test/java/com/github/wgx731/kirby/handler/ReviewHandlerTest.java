@@ -93,8 +93,4 @@ class ReviewHandlerTest {
             .consumeWith(document("get_daily_report"));
     }
 
-    @Test
-    void getDate() {
-    }
-
 }

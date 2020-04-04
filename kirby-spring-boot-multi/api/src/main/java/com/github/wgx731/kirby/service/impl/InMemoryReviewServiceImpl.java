@@ -58,10 +58,8 @@ public class InMemoryReviewServiceImpl implements ReviewService {
     @Override
     public List<Review> addReview(LocalDate date, Review review) {
         Map<LocalDate, List<Review>> storage = calculator.getReviewHistory();
-        List<Review> reviews = new ArrayList<>();
-        if (storage.containsKey(date)) {
-            reviews = storage.get(date);
-        }
+        List<Review> reviews = storage.containsKey(date) ?
+            storage.get(date) : new ArrayList<>();
         reviews.add(review);
         storage.put(date, reviews);
         return Collections.unmodifiableList(reviews);
